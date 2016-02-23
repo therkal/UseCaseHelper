@@ -155,7 +155,8 @@
             // tsBottomBar
             // 
             this.tsBottomBar.Name = "tsBottomBar";
-            this.tsBottomBar.Size = new System.Drawing.Size(0, 17);
+            this.tsBottomBar.Size = new System.Drawing.Size(98, 17);
+            this.tsBottomBar.Text = "Select a drawable";
             // 
             // drawCanvas
             // 

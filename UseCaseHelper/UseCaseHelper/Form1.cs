@@ -57,7 +57,6 @@ namespace UseCaseHelper
                         tsBottomBar.Text = "Drawing a line!";
                     }
                     
-
                 }
                 else if (rbUseCase.Checked == true)
                 {
@@ -67,6 +66,11 @@ namespace UseCaseHelper
                 else if (rbActor.Checked == true)
                 {
                     //Actor is selected.
+                    startPoint = clickLocation;
+                    tsBottomBar.Text = "";
+                    shapeList.Add(new Model.Actor("NewActor", startPoint));
+                    refreshCanvas();
+                    
                 }
 
             }
