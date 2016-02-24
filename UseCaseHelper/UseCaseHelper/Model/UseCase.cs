@@ -12,8 +12,9 @@ namespace UseCaseHelper.Model
 {
     public class UseCase : ShapeObject
     {
-        public const int Width = 160, Height = 80;
+        public const int Width = 160, Height = 80;              //Standard with & Height for the actor.
 
+        //Form data.
         public string Naam { get; private set; }
         public string Samenvatting { get; private set; }
         public string Actoren { get; private set; }
@@ -21,34 +22,44 @@ namespace UseCaseHelper.Model
         public string Beschrijving { get; private set; }
         public string Uitzonderingen { get; private set; }
         public string Resultaat { get; private set; }
-
-
-        public UseCase(int id, Point start, string naam, string samenvatting, string actoren, string aannamen, string beschrijving, string uitzonderingen, string resultaat)
-            : base(DrawableType.UseCase, start, new Point(Width, Height))
+        
+        public UseCase(Point start) : base (DrawableType.UseCase, start, new Point(Width,Height))
         {
-            Id = id;
-            Naam = naam;
-            Samenvatting = samenvatting;
-            Actoren = actoren;
-            Aannamen = aannamen;
-            Beschrijving = beschrijving;
-            Uitzonderingen = uitzonderingen;
-            Resultaat = resultaat;
+
         }
 
-        public override void Draw(Graphics g)
+        public override void Draw(Graphics g , Color c)
         {
-            throw new NotImplementedException();
+            //Rectangle with Object dimensions
+            Rectangle dimensions = new Rectangle(Start.X, Start.Y, Width, Height);
+
+            //Draw & fill the Ellipse
+            g.FillEllipse(Brushes.White, dimensions);
+            g.DrawEllipse(new Pen(c), dimensions);
+
+            //Create the string 
+            StringFormat sf = new StringFormat();
+            sf.Alignment = StringAlignment.Center;
+            sf.LineAlignment = StringAlignment.Center;
+
+            g.DrawString(Naam, new Font(FontFamily.GenericSansSerif, 10), Brushes.Black, new RectangleF(Start.X + 20, Start.Y + 10, 120, 60), sf);
         }
 
-        public override void DrawColor(Graphics g, Color c)
+
+        protected override Point CalculateClip()
         {
-            throw new NotImplementedException();
+            return new Point(Start.X + Width / 2, Start.Y + Height / 2);
         }
 
-        protected override Point CalculateIntersectionPoint()
+        public void GetDataFromDialog(UseCaseEditor form)
         {
-            throw new NotImplementedException();
+            Naam = form.Naam;
+            Samenvatting = form.Samenvatting;
+            Actoren = form.Actoren;
+            Aannamen = form.Aannamen;
+            Beschrijving = form.Beschrijving;
+            Uitzonderingen = form.Uitzonderingen;
+            Resultaat = form.Resultaat;
         }
     }
 }

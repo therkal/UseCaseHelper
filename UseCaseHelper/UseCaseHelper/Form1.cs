@@ -16,9 +16,11 @@ namespace UseCaseHelper
         #region Globals
         private List<Shape> myShapes = new List<Shape>();
         private bool isDrawingLine = false, isMovingObject = false;
-        private Point lineStart, lineEnd;
+        private int lineStartX, lineStartY, lineEndX, lineEndY;
         private ShapeObject firstTarget, secondTarget;
         private readonly Random random = new Random();
+
+        private const int LineCollisionRadius = 5;          //Sets buffer zone for line click. (User is likely to miss the line.)
         #endregion Globals
 
 
@@ -37,19 +39,45 @@ namespace UseCaseHelper
             //Draw all shapes.
             foreach(Shape s in myShapes)
             {
-                if(s !=null) { s.Draw(g); }
+                if(s !=null) { s.Draw(g , Color.Black); }
+            }
+
+            //If we are drawing a line, draw whilst moving with our mouse.
+            if (rbLine.Checked && isDrawingLine)
+            {
+                g.DrawLine(new Pen(Color.Red), lineStartX, lineStartY, lineEndX, lineEndY);
             }
         }
 
         private void drawCanvas_MouseDown(object sender, MouseEventArgs e)
         {
-
+            firstTarget = getObjectCollision(e.X, e.Y);
+            if( firstTarget != null)
+            {
+                if(rbLine.Checked)
+                {
+                    //WE are crearing a line
+                    isDrawingLine = true;
+                    lineStartX = e.X;
+                    lineStartY = e.Y;
+                } else if (rbMove.Checked)
+                {
+                    //We are moving a line.
+                }
+            }
         }
 
 
         private void drawCanvas_MouseMove(object sender, MouseEventArgs e)
         {
+            if(rbLine.Checked && isDrawingLine)
+            {
+                // We are drawing a line! 
+                lineEndX = e.X;
+                lineEndY = e.Y;
 
+                drawCanvas.Refresh();
+            }
         }
 
         private void drawCanvas_MouseUp(object sender, MouseEventArgs e)
@@ -87,6 +115,62 @@ namespace UseCaseHelper
                     }
                 }
             }
+            else if (rbUseCase.Checked)
+            {
+                ShapeObject so;
+                if((so = getObjectCollision(e.X , e.Y)) != null && so.Type == DrawableType.UseCase) 
+                {
+                    //We have clicked on an existing shape
+                    using(UseCaseEditor UCE = new UseCaseEditor())
+                    {
+                        Model.UseCase u = (Model.UseCase)so;
+                        UCE.SetDataFromUseCase(u);              //Set the previously found data.
+                        DialogResult r = UCE.ShowDialog();
+                        if(r == DialogResult.OK)
+                        {
+                            //If dialog is closed, update the info.
+                            u.GetDataFromDialog(UCE);
+                        }
+                    }
+                    
+                    
+                } else
+                {
+                    //We have clicked on a new object.
+                    using (UseCaseEditor UCE = new UseCaseEditor())
+                    {
+                        DialogResult r = UCE.ShowDialog();
+
+                        if(r == DialogResult.OK)
+                        {
+                            //Create new model
+                            Model.UseCase u = new Model.UseCase(new Point(e.X - Model.UseCase.Width / 2, e.Y - Model.UseCase.Height / 2));
+                            //Get data from other form
+                            u.GetDataFromDialog(UCE);
+                            //Add to shape list
+                            myShapes.Add(u);
+                        }
+                    }
+                }
+            }
+            else if (rbLine.Checked && isDrawingLine)
+            {
+                //Person has already clicked once.
+                isDrawingLine = false;
+
+                secondTarget = getObjectCollision(e.X, e.Y);            //Get second target
+                if(secondTarget != null && firstTarget.Type != secondTarget.Type)
+                {
+                    //We have 2 points, and the first point is not the same as the second.
+                    myShapes.Add(new Model.Line(firstTarget, secondTarget));
+                }
+
+                lineEndX = lineEndY = lineStartX = lineStartY = 0;
+                firstTarget = secondTarget = null;
+
+                drawCanvas.Refresh();
+
+            }
             else if (rbDelete.Checked)
             {
                 ShapeObject so;
@@ -99,12 +183,7 @@ namespace UseCaseHelper
                     // We might have clicked on a line?
                 }
 
-                drawCanvas.Refresh();
             }
-
-            
-
-            
 
             //Refresh our canvas
             drawCanvas.Refresh();
@@ -135,6 +214,27 @@ namespace UseCaseHelper
 
             return null; 
         }
+
+        /// <summary>
+        /// Checks for collisions with a line.
+        /// </summary>
+        /// <param name="x"></param>
+        /// <param name="y"></param>
+        /// <returns></returns>
+        private Model.Line getLineCollision(int x, int y)
+        {
+            foreach(Model.Line l in myShapes.Where(l => l.Type == DrawableType.Line).Reverse())
+            {
+                double lineIncline = (double)(l.End.Y - l.Start.Y) / (double)(l.End.X - l.Start.X);
+                Point linePoint = new Point(x, (int)((x - l.Start.X) * lineIncline) + l.Start.Y);
+                if (x < linePoint.X + LineCollisionRadius && x >= linePoint.X - LineCollisionRadius && y < linePoint.Y + LineCollisionRadius && y >= linePoint.Y - LineCollisionRadius)
+                {
+                    return l;
+                }
+            }
+
+            return null; 
+        } 
         #endregion HELPERS;
 
     }

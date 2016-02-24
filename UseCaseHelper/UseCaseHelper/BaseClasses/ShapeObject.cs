@@ -11,7 +11,7 @@ namespace UseCaseHelper.BaseClasses
     {
         private static int safeShapeId = 0;
 
-        public Point IntersectionPoint { get; private set; }
+        public Point Clip { get; private set; }
         public int Id { get; protected set; }
 
         public static int SafeShapeId
@@ -21,16 +21,16 @@ namespace UseCaseHelper.BaseClasses
 
         public ShapeObject(DrawableType type , Point startPoint , Point endPoint) : base (type, startPoint, endPoint)
         {
-            IntersectionPoint = CalculateIntersectionPoint();
+            Clip = CalculateClip();
             Id = SafeShapeId;
         }
 
         public void SetStartLocation(Point loc)
         {
-            IntersectionPoint = CalculateIntersectionPoint();
+            Clip = CalculateClip();
             Start = loc;
         }
 
-        protected abstract Point CalculateIntersectionPoint();
+        protected abstract Point CalculateClip();
     }
 }

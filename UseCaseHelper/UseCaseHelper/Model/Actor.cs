@@ -19,23 +19,16 @@ namespace UseCaseHelper.Model
 
         public string Name { get; private set; }
 
+        /// <summary>
+        /// Create
+        /// </summary>
+        /// <param name="start">Starting point of the Actor.</param>
         public Actor(Point start) : base (DrawableType.Actor , start , new Point(Width, Height))
         {
 
         }
 
-        public Actor (int id, Point start, string name ) : base(DrawableType.Actor, start, new Point(Width, Height))
-        {
-            Id = id;
-            Name = name;
-        }
-
-        public override void Draw(Graphics g)
-        {
-            DrawColor(g, Color.Black);
-        }
-
-        public override void DrawColor(Graphics g, Color c)
+        public override void Draw(Graphics g, Color c)
         {
             Pen p = new Pen(c);
 
@@ -47,7 +40,7 @@ namespace UseCaseHelper.Model
             g.DrawLine(p, Start.X + HeadSize / 2, Start.Y + HeadSize, Start.X + HeadSize / 2, Start.Y * 2);
 
             //Left arm
-            g.DrawLine(p, Start.X + HeadSize / 2, Start.Y + HeadSize, Start.X , Start.Y + HeadSize * 2);
+            g.DrawLine(p, Start.X + HeadSize / 2, Start.Y + HeadSize, Start.X, Start.Y + HeadSize * 2);
 
             //Right arm
             g.DrawLine(p, Start.X + HeadSize / 2, Start.Y + HeadSize, Start.X + HeadSize, Start.Y + HeadSize * 2);
@@ -64,15 +57,15 @@ namespace UseCaseHelper.Model
             sf.LineAlignment = StringAlignment.Center;
 
             g.DrawString(Name, new Font(FontFamily.GenericSansSerif, 10), Brushes.Black, new RectangleF(Start.X - Width, Start.Y + Height, Width * 3, 20), sf);
-
         }
+
 
         public void GetDataFromDialog(ActorCreater form)
         {
             Name = form.Name;
         }
 
-        protected override Point CalculateIntersectionPoint()
+        protected override Point CalculateClip()
         {
             return new Point(Start.X + HeadSize / 2, Start.Y + HeadSize / 2);
         }

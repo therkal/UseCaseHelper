@@ -25,8 +25,7 @@ namespace UseCaseHelper.BaseClasses
             End = end;
         }
 
-        public abstract void Draw(Graphics g);
-        public abstract void DrawColor(Graphics g, Color c);
+        public abstract void Draw(Graphics g , Color c);
     }
 
 
