@@ -7,89 +7,135 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using UseCaseHelper.Interface;
+using UseCaseHelper.BaseClasses;
 
 namespace UseCaseHelper
 {
     public partial class Form1 : Form
     {
         #region Globals
-        public List<Shape> shapeList = new List<Shape>();                       //Holds all different types of shapes.
+        private List<Shape> myShapes = new List<Shape>();
+        private bool isDrawingLine = false, isMovingObject = false;
+        private Point lineStart, lineEnd;
+        private ShapeObject firstTarget, secondTarget;
+        private readonly Random random = new Random();
         #endregion Globals
+
 
         public Form1()
         {
             InitializeComponent();
         }
 
-        //Variables for Line.
-        bool drawing = false;
-        Point startPoint = new Point();
-        Point endPoint = new Point();
-
-        private void canvasClicked(object sender, EventArgs e)
+        #region EventHandlers;
+        private void drawCanvas_Paint(object sender, PaintEventArgs e)
         {
-            MouseEventArgs MouseEvent = (MouseEventArgs)e;
-            var clickLocation = MouseEvent.Location;
+            Graphics g = e.Graphics;
+            //Order list by types.
+            myShapes = myShapes.OrderBy(t => t.Type).ToList();
 
-            if (rbCreate.Checked == true)
+            //Draw all shapes.
+            foreach(Shape s in myShapes)
             {
-                //RadioButton create is checked. 
+                if(s !=null) { s.Draw(g); }
+            }
+        }
 
-                if (rbLine.Checked == true)
-                {
-                    //Line checked.
-                    if(drawing == true)
+        private void drawCanvas_MouseDown(object sender, MouseEventArgs e)
+        {
+
+        }
+
+
+        private void drawCanvas_MouseMove(object sender, MouseEventArgs e)
+        {
+
+        }
+
+        private void drawCanvas_MouseUp(object sender, MouseEventArgs e)
+        {
+            if (rbActor.Checked)
+            {
+                ShapeObject so;
+                if((so = getObjectCollision(e.X, e.Y)) != null && so.Type == DrawableType.Actor) {
+                    //We have clicked on an exisiting object of type Actor. Edit name
+                    using(ActorCreater ActorForm = new ActorCreater())
                     {
-                        endPoint = clickLocation;
-                        drawing = false;
-                        //We have 2 point, make new object.
-                       if(startPoint.IsEmpty == false && endPoint.IsEmpty == false)
+                        Model.Actor a = (Model.Actor)so;
+                        ActorForm.setDataFromActor(a);
+                        DialogResult r = ActorForm.ShowDialog();
+                        if(r == DialogResult.OK)
                         {
-                            Model.Line addedLine = new Model.Line(startPoint, endPoint);
-                            shapeList.Add(addedLine);
-                            refreshCanvas();
+                            a.GetDataFromDialog(ActorForm);
                         }
-                    } else
-                    {
-                        startPoint = clickLocation;
-                        drawing = true;
-                        tsBottomBar.Text = "Drawing a line!";
                     }
-                    
-                }
-                else if (rbUseCase.Checked == true)
+                } else
                 {
-                    //UseCase is selected.
-
+                    // There is no existing Actor. Make a new one.
+                    using (ActorCreater ActorForm = new ActorCreater())
+                    {
+                        DialogResult r = ActorForm.ShowDialog();
+                        if (r == DialogResult.OK)
+                        {
+                            //Create new Actor.
+                            Model.Actor newActor = new Model.Actor(new Point(e.X - Model.Actor.HeadSize / 2, e.Y - Model.Actor.HeadSize / 2));
+                            //Get data from actor form
+                            newActor.GetDataFromDialog(ActorForm);
+                            //Add to our shapelist
+                            myShapes.Add(newActor);
+                        }
+                    }
                 }
-                else if (rbActor.Checked == true)
-                {
-                    //Actor is selected.
-                    startPoint = clickLocation;
-                    tsBottomBar.Text = "";
-                    shapeList.Add(new Model.Actor("NewActor", startPoint));
-                    refreshCanvas();
-                    
-                }
-
             }
-            else if (rbSelect.Checked == true)
+            else if (rbDelete.Checked)
             {
-                //Select is checked. 
+                ShapeObject so;
+                if ((so = getObjectCollision(e.X, e.Y)) != null)
+                {
+                    // We have clicked on an exising object + we have checked delete. 
+                    myShapes.Remove(so);
+                } else
+                {
+                    // We might have clicked on a line?
+                }
+
+                drawCanvas.Refresh();
             }
 
+            
+
+            
+
+            //Refresh our canvas
+            drawCanvas.Refresh();
         }
 
+        #endregion EvenetHandlers;
 
-        private void refreshCanvas()
+
+
+
+
+        #region HELPERS;
+        /// <summary>
+        /// Checks for collisions with near objects. 
+        /// </summary>
+        /// <param name="x">Mouse X -> Where clicked</param>
+        /// <param name="y">Mouse y position -> Where clicked</param>
+        /// <returns></returns>
+        public ShapeObject getObjectCollision(int x, int y)
         {
-            foreach(Shape s in shapeList)
+            foreach(Shape s in myShapes.Where(s => s.Type != DrawableType.Line).Reverse())
             {
-                s.Draw(drawCanvas);
+                if(x >= s.Start.X && x < s.Start.X + s.End.X && y >= s.Start.Y && y < s.Start.Y + s.End.Y)
+                {
+                    return (ShapeObject)s;
+                }
             }
 
+            return null; 
         }
+        #endregion HELPERS;
 
     }
 }

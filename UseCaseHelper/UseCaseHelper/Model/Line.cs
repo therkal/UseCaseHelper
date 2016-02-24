@@ -5,25 +5,28 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using UseCaseHelper.BaseClasses;
 
 namespace UseCaseHelper.Model
 {
-    class Line : ShapeBaseClass
+    class Line : Shape
     {
-        private Point LineStartingPoint { get; set; }
-        private Point LineEndingPoint { get; set; }
+        public ShapeObject FirstTarget, SecondTarget;
 
-        public Line(Point start , Point end)
+        public Line(ShapeObject first, ShapeObject second) :base(DrawableType.Line, first.IntersectionPoint, second.IntersectionPoint)
         {
-            LineStartingPoint = start;
-            LineEndingPoint = end;
+            FirstTarget = first;
+            SecondTarget = second;
         }
-        public override void Draw(PictureBox drawCanvas)
-        {
-            Graphics draw = drawCanvas.CreateGraphics();
-            Pen pen = new Pen(Color.Black);
 
-            draw.DrawLine(pen, LineStartingPoint, LineEndingPoint);
+        public override void Draw(Graphics g)
+        {
+            DrawColor(g, Color.Black);
+        }
+
+        public override void DrawColor(Graphics g, Color c)
+        {
+            g.DrawLine(new Pen(c), Start.X, Start.Y, End.X, End.Y);
         }
     }
 }

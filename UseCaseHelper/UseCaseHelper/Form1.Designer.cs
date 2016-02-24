@@ -33,8 +33,8 @@
             this.rbUseCase = new System.Windows.Forms.RadioButton();
             this.rbActor = new System.Windows.Forms.RadioButton();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
-            this.rbSelect = new System.Windows.Forms.RadioButton();
-            this.rbCreate = new System.Windows.Forms.RadioButton();
+            this.rbDelete = new System.Windows.Forms.RadioButton();
+            this.rbMove = new System.Windows.Forms.RadioButton();
             this.btnClearAll = new System.Windows.Forms.Button();
             this.btnRemove = new System.Windows.Forms.Button();
             this.statusStrip1 = new System.Windows.Forms.StatusStrip();
@@ -93,36 +93,36 @@
             // 
             // groupBox2
             // 
-            this.groupBox2.Controls.Add(this.rbSelect);
-            this.groupBox2.Controls.Add(this.rbCreate);
+            this.groupBox2.Controls.Add(this.rbDelete);
+            this.groupBox2.Controls.Add(this.rbMove);
             this.groupBox2.Location = new System.Drawing.Point(175, 12);
             this.groupBox2.Name = "groupBox2";
             this.groupBox2.Size = new System.Drawing.Size(137, 95);
             this.groupBox2.TabIndex = 1;
             this.groupBox2.TabStop = false;
-            this.groupBox2.Text = "Modes";
+            this.groupBox2.Text = "Edit";
             // 
-            // rbSelect
+            // rbDelete
             // 
-            this.rbSelect.AutoSize = true;
-            this.rbSelect.Location = new System.Drawing.Point(7, 43);
-            this.rbSelect.Name = "rbSelect";
-            this.rbSelect.Size = new System.Drawing.Size(55, 17);
-            this.rbSelect.TabIndex = 1;
-            this.rbSelect.TabStop = true;
-            this.rbSelect.Text = "Select";
-            this.rbSelect.UseVisualStyleBackColor = true;
+            this.rbDelete.AutoSize = true;
+            this.rbDelete.Location = new System.Drawing.Point(7, 43);
+            this.rbDelete.Name = "rbDelete";
+            this.rbDelete.Size = new System.Drawing.Size(56, 17);
+            this.rbDelete.TabIndex = 1;
+            this.rbDelete.TabStop = true;
+            this.rbDelete.Text = "Delete";
+            this.rbDelete.UseVisualStyleBackColor = true;
             // 
-            // rbCreate
+            // rbMove
             // 
-            this.rbCreate.AutoSize = true;
-            this.rbCreate.Location = new System.Drawing.Point(7, 20);
-            this.rbCreate.Name = "rbCreate";
-            this.rbCreate.Size = new System.Drawing.Size(56, 17);
-            this.rbCreate.TabIndex = 0;
-            this.rbCreate.TabStop = true;
-            this.rbCreate.Text = "Create";
-            this.rbCreate.UseVisualStyleBackColor = true;
+            this.rbMove.AutoSize = true;
+            this.rbMove.Location = new System.Drawing.Point(7, 20);
+            this.rbMove.Name = "rbMove";
+            this.rbMove.Size = new System.Drawing.Size(52, 17);
+            this.rbMove.TabIndex = 0;
+            this.rbMove.TabStop = true;
+            this.rbMove.Text = "Move";
+            this.rbMove.UseVisualStyleBackColor = true;
             // 
             // btnClearAll
             // 
@@ -166,7 +166,10 @@
             this.drawCanvas.Size = new System.Drawing.Size(1063, 456);
             this.drawCanvas.TabIndex = 5;
             this.drawCanvas.TabStop = false;
-            this.drawCanvas.Click += new System.EventHandler(this.canvasClicked);
+            this.drawCanvas.Paint += new System.Windows.Forms.PaintEventHandler(this.drawCanvas_Paint);
+            this.drawCanvas.MouseDown += new System.Windows.Forms.MouseEventHandler(this.drawCanvas_MouseDown);
+            this.drawCanvas.MouseMove += new System.Windows.Forms.MouseEventHandler(this.drawCanvas_MouseMove);
+            this.drawCanvas.MouseUp += new System.Windows.Forms.MouseEventHandler(this.drawCanvas_MouseUp);
             // 
             // Form1
             // 
@@ -198,8 +201,8 @@
         private System.Windows.Forms.RadioButton rbLine;
         private System.Windows.Forms.RadioButton rbUseCase;
         private System.Windows.Forms.RadioButton rbActor;
-        private System.Windows.Forms.RadioButton rbSelect;
-        private System.Windows.Forms.RadioButton rbCreate;
+        private System.Windows.Forms.RadioButton rbDelete;
+        private System.Windows.Forms.RadioButton rbMove;
         private System.Windows.Forms.Button btnClearAll;
         private System.Windows.Forms.Button btnRemove;
         private System.Windows.Forms.GroupBox groupBox2;
