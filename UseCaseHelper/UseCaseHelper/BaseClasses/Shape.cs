@@ -8,10 +8,16 @@ using System.Windows.Forms;
 
 namespace UseCaseHelper.BaseClasses
 {
+    /// <summary>
+    /// Enum for possible encountered types.
+    /// </summary>
     public enum DrawableType
     {
         Line = 0, Actor = 1, UseCase = 2
     }
+    /// <summary>
+    /// Bsaeclass for shapes. 
+    /// </summary>
     public abstract class Shape
     {
         public DrawableType Type { get; private set; }

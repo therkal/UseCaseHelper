@@ -37,7 +37,7 @@ namespace UseCaseHelper.Model
             g.DrawEllipse(p, Start.X, Start.Y, HeadSize, HeadSize);
 
             //Body
-            g.DrawLine(p, Start.X + HeadSize / 2, Start.Y + HeadSize, Start.X + HeadSize / 2, Start.Y * 2);
+            g.DrawLine(p, Start.X + HeadSize / 2, Start.Y + HeadSize, Start.X + HeadSize / 2, Start.Y + HeadSize * 2);
 
             //Left arm
             g.DrawLine(p, Start.X + HeadSize / 2, Start.Y + HeadSize, Start.X, Start.Y + HeadSize * 2);
@@ -67,7 +67,7 @@ namespace UseCaseHelper.Model
 
         protected override Point CalculateClip()
         {
-            return new Point(Start.X + HeadSize / 2, Start.Y + HeadSize / 2);
+            return new Point(Start.X + HeadSize /2 , Start.Y + HeadSize /2 );
         }
     }
 }

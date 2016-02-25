@@ -14,10 +14,10 @@ namespace UseCaseHelper
     public partial class Form1 : Form
     {
         #region Globals
-        private List<Shape> myShapes = new List<Shape>();
-        private bool isDrawingLine = false, isMovingObject = false;
-        private int lineStartX, lineStartY, lineEndX, lineEndY;
-        private ShapeObject firstTarget, secondTarget;
+        private List<Shape> myShapes = new List<Shape>();               //List of myShapes
+        private bool isDrawingLine = false, isMovingObject = false;     // (Bool) Checks if we are drawing, (Bool) Checks if we are moving.
+        private int lineStartX, lineStartY, lineEndX, lineEndY;         // (int) Gets the coördinates of LineStart and End. Used for drawing line in MoveMouse function.
+        private ShapeObject firstTarget, secondTarget;                  // (ShapeObject) Predefined class used for the boundaries 
         private readonly Random random = new Random();
 
         private const int LineCollisionRadius = 5;          //Sets buffer zone for line click. (User is likely to miss the line.)
@@ -54,6 +54,7 @@ namespace UseCaseHelper
             firstTarget = getObjectCollision(e.X, e.Y);
             if( firstTarget != null)
             {
+                // We moused down on a target.
                 if(rbLine.Checked)
                 {
                     //WE are crearing a line
@@ -62,7 +63,7 @@ namespace UseCaseHelper
                     lineStartY = e.Y;
                 } else if (rbMove.Checked)
                 {
-                    //We are moving a line.
+                    //We are moving an object
                 }
             }
         }
@@ -82,7 +83,7 @@ namespace UseCaseHelper
 
         private void drawCanvas_MouseUp(object sender, MouseEventArgs e)
         {
-            if (rbActor.Checked)
+            if (rbActor.Checked && rbDelete.Checked == false )
             {
                 ShapeObject so;
                 if((so = getObjectCollision(e.X, e.Y)) != null && so.Type == DrawableType.Actor) {
@@ -115,7 +116,7 @@ namespace UseCaseHelper
                     }
                 }
             }
-            else if (rbUseCase.Checked)
+            else if (rbUseCase.Checked && rbDelete.Checked == false)
             {
                 ShapeObject so;
                 if((so = getObjectCollision(e.X , e.Y)) != null && so.Type == DrawableType.UseCase) 
@@ -153,7 +154,7 @@ namespace UseCaseHelper
                     }
                 }
             }
-            else if (rbLine.Checked && isDrawingLine)
+            else if (rbLine.Checked && isDrawingLine && rbDelete.Checked == false)
             {
                 //Person has already clicked once.
                 isDrawingLine = false;
@@ -165,6 +166,7 @@ namespace UseCaseHelper
                     myShapes.Add(new Model.Line(firstTarget, secondTarget));
                 }
 
+                //Set the values to null.
                 lineEndX = lineEndY = lineStartX = lineStartY = 0;
                 firstTarget = secondTarget = null;
 
@@ -181,6 +183,11 @@ namespace UseCaseHelper
                 } else
                 {
                     // We might have clicked on a line?
+                    Shape line;
+                    if((line = getLineCollision(e.X , e.Y)) != null)
+                    {
+                        myShapes.Remove(line);
+                    }
                 }
 
             }
@@ -225,8 +232,9 @@ namespace UseCaseHelper
         {
             foreach(Model.Line l in myShapes.Where(l => l.Type == DrawableType.Line).Reverse())
             {
-                double lineIncline = (double)(l.End.Y - l.Start.Y) / (double)(l.End.X - l.Start.X);
-                Point linePoint = new Point(x, (int)((x - l.Start.X) * lineIncline) + l.Start.Y);
+                
+                double lineIncline = (double)(l.End.Y - l.Start.Y) / (double)(l.End.X - l.Start.X);         //Calculates the angle of the line
+                Point linePoint = new Point(x, (int)((x - l.Start.X) * lineIncline) + l.Start.Y);           //Gets the click offset (if user doesn't click the exact pixel)
                 if (x < linePoint.X + LineCollisionRadius && x >= linePoint.X - LineCollisionRadius && y < linePoint.Y + LineCollisionRadius && y >= linePoint.Y - LineCollisionRadius)
                 {
                     return l;
