@@ -15,12 +15,14 @@ namespace UseCaseHelper
     {
         #region Globals
         private List<Shape> myShapes = new List<Shape>();               //List of myShapes
-        private bool isDrawingLine = false, isMovingObject = false;     // (Bool) Checks if we are drawing, (Bool) Checks if we are moving.
+        private bool isDrawingLine = false;                             // Checks if we are drawing
+        private bool isMovingObject = false;                            // (Bool) Checks if we are moving.
+        private bool skipMouse = false;                                 // If we are deleting objects, skip mouse up.
         private int lineStartX, lineStartY, lineEndX, lineEndY;         // (int) Gets the coördinates of LineStart and End. Used for drawing line in MoveMouse function.
         private ShapeObject firstTarget, secondTarget;                  // (ShapeObject) Predefined class used for the boundaries 
         private readonly Random random = new Random();
 
-        private const int LineCollisionRadius = 5;          //Sets buffer zone for line click. (User is likely to miss the line.)
+        private const int LineCollisionRadius = 5;                      //Sets buffer zone for line click. (User is likely to miss the line.)
         #endregion Globals
 
 
@@ -32,6 +34,9 @@ namespace UseCaseHelper
         #region EventHandlers;
         private void drawCanvas_Paint(object sender, PaintEventArgs e)
         {
+            //Smooth edges
+            e.Graphics.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias;
+
             Graphics g = e.Graphics;
             //Order list by types.
             myShapes = myShapes.OrderBy(t => t.Type).ToList();
@@ -66,11 +71,37 @@ namespace UseCaseHelper
                     //We are moving an object
                 }
             }
+
+            if (rbDelete.Checked)
+            {
+                skipMouse = true;               //Make sure we won't start drawing a line whilst deleting an object.
+            }
         }
 
+        private void btnClearAll_Click(object sender, EventArgs e)
+        {
+            
+        }
 
         private void drawCanvas_MouseMove(object sender, MouseEventArgs e)
         {
+            ShapeObject so;
+            Shape line;
+            if((so = getObjectCollision(e.X , e.Y)) != null)
+            {
+                tsBottomBar.Text = "Edit " + so.Type;
+
+                Cursor = Cursors.Hand;
+            } else if ((line = getLineCollision(e.X, e.Y)) != null) {
+                // We have a line
+                tsBottomBar.Text = "Move or delete " + line.Type;
+                Cursor = Cursors.Hand;
+            } else
+            {
+                Cursor = Cursors.Arrow;
+                tsBottomBar.Text = "Noting selected";
+            }
+
             if(rbLine.Checked && isDrawingLine)
             {
                 // We are drawing a line! 
@@ -83,7 +114,7 @@ namespace UseCaseHelper
 
         private void drawCanvas_MouseUp(object sender, MouseEventArgs e)
         {
-            if (rbActor.Checked && rbDelete.Checked == false )
+            if (rbActor.Checked && !rbDelete.Checked && !skipMouse )
             {
                 ShapeObject so;
                 if((so = getObjectCollision(e.X, e.Y)) != null && so.Type == DrawableType.Actor) {
@@ -116,7 +147,7 @@ namespace UseCaseHelper
                     }
                 }
             }
-            else if (rbUseCase.Checked && rbDelete.Checked == false)
+            else if (rbUseCase.Checked && !rbDelete.Checked && !skipMouse)
             {
                 ShapeObject so;
                 if((so = getObjectCollision(e.X , e.Y)) != null && so.Type == DrawableType.UseCase) 
@@ -154,7 +185,7 @@ namespace UseCaseHelper
                     }
                 }
             }
-            else if (rbLine.Checked && isDrawingLine && rbDelete.Checked == false)
+            else if (rbLine.Checked && isDrawingLine && !rbDelete.Checked && !skipMouse)
             {
                 //Person has already clicked once.
                 isDrawingLine = false;
@@ -175,6 +206,7 @@ namespace UseCaseHelper
             }
             else if (rbDelete.Checked)
             {
+
                 ShapeObject so;
                 if ((so = getObjectCollision(e.X, e.Y)) != null)
                 {
