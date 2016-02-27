@@ -83,6 +83,28 @@ namespace UseCaseHelper
             
         }
 
+        private void btnScreenShot_Click(object sender, EventArgs e)
+        {
+            Bitmap screenshot = new Bitmap(drawCanvas.Width, drawCanvas.Height);
+            drawCanvas.DrawToBitmap(screenshot, new Rectangle(new Point(0,0), new Size(drawCanvas.Width , drawCanvas.Height)));
+            using (SaveFileDialog sf = new SaveFileDialog())
+            {
+                sf.Filter = "Bitmap Image | *.bmp";
+                DialogResult r = sf.ShowDialog();
+
+                if (r == DialogResult.OK)
+                {
+                    if (sf.FileName != "")
+                    {
+                        // user supplied a file name
+                        System.IO.FileStream fs = (System.IO.FileStream)sf.OpenFile();
+                        screenshot.Save(fs, System.Drawing.Imaging.ImageFormat.Bmp);
+                        fs.Close();
+                    }
+                }
+            }
+        }
+
         private void drawCanvas_MouseMove(object sender, MouseEventArgs e)
         {
             ShapeObject so;
@@ -229,10 +251,6 @@ namespace UseCaseHelper
         }
 
         #endregion EvenetHandlers;
-
-
-
-
 
         #region HELPERS;
         /// <summary>

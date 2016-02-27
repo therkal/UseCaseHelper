@@ -36,10 +36,10 @@
             this.rbDelete = new System.Windows.Forms.RadioButton();
             this.rbMove = new System.Windows.Forms.RadioButton();
             this.btnClearAll = new System.Windows.Forms.Button();
-            this.btnRemove = new System.Windows.Forms.Button();
             this.statusStrip1 = new System.Windows.Forms.StatusStrip();
             this.tsBottomBar = new System.Windows.Forms.ToolStripStatusLabel();
             this.drawCanvas = new System.Windows.Forms.PictureBox();
+            this.btnScreenShot = new System.Windows.Forms.Button();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.statusStrip1.SuspendLayout();
@@ -132,15 +132,7 @@
             this.btnClearAll.TabIndex = 2;
             this.btnClearAll.Text = "Clear All";
             this.btnClearAll.UseVisualStyleBackColor = true;
-            // 
-            // btnRemove
-            // 
-            this.btnRemove.Location = new System.Drawing.Point(962, 49);
-            this.btnRemove.Name = "btnRemove";
-            this.btnRemove.Size = new System.Drawing.Size(115, 23);
-            this.btnRemove.TabIndex = 3;
-            this.btnRemove.Text = "Remove";
-            this.btnRemove.UseVisualStyleBackColor = true;
+            this.btnClearAll.Click += new System.EventHandler(this.btnClearAll_Click);
             // 
             // statusStrip1
             // 
@@ -171,14 +163,24 @@
             this.drawCanvas.MouseMove += new System.Windows.Forms.MouseEventHandler(this.drawCanvas_MouseMove);
             this.drawCanvas.MouseUp += new System.Windows.Forms.MouseEventHandler(this.drawCanvas_MouseUp);
             // 
+            // btnScreenShot
+            // 
+            this.btnScreenShot.Location = new System.Drawing.Point(962, 41);
+            this.btnScreenShot.Name = "btnScreenShot";
+            this.btnScreenShot.Size = new System.Drawing.Size(115, 23);
+            this.btnScreenShot.TabIndex = 6;
+            this.btnScreenShot.Text = "Make Screenshot";
+            this.btnScreenShot.UseVisualStyleBackColor = true;
+            this.btnScreenShot.Click += new System.EventHandler(this.btnScreenShot_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1087, 644);
+            this.Controls.Add(this.btnScreenShot);
             this.Controls.Add(this.drawCanvas);
             this.Controls.Add(this.statusStrip1);
-            this.Controls.Add(this.btnRemove);
             this.Controls.Add(this.btnClearAll);
             this.Controls.Add(this.groupBox2);
             this.Controls.Add(this.groupBox1);
@@ -204,12 +206,12 @@
         private System.Windows.Forms.RadioButton rbDelete;
         private System.Windows.Forms.RadioButton rbMove;
         private System.Windows.Forms.Button btnClearAll;
-        private System.Windows.Forms.Button btnRemove;
         private System.Windows.Forms.GroupBox groupBox2;
         private System.Windows.Forms.GroupBox groupBox1;
         private System.Windows.Forms.StatusStrip statusStrip1;
         private System.Windows.Forms.ToolStripStatusLabel tsBottomBar;
         private System.Windows.Forms.PictureBox drawCanvas;
+        private System.Windows.Forms.Button btnScreenShot;
     }
 }
 
