@@ -62,6 +62,7 @@
       <DependentUpon>Form1.cs</DependentUpon>
     </Compile>
     <Compile Include="BaseClasses\Shape.cs" />
+    <Compile Include="Interface\ISelectable.cs" />
     <Compile Include="Model\Actor.cs" />
     <Compile Include="Model\Line.cs" />
     <Compile Include="Model\UseCase.cs" />
