@@ -36,10 +36,9 @@ namespace UseCaseHelper.BaseClasses
             Id = SafeShapeId;
         }
 
-        public void SetStartLocation(Point loc)
+        public ShapeObject()
         {
-            Clip = CalculateClip();
-            Start = loc;
+
         }
 
         /// <summary>

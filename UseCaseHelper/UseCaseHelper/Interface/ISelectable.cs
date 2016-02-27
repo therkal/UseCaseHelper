@@ -11,3 +11,4 @@ namespace UseCaseHelper.Interface
         void SetSelected(bool selected);
     }
 }
+ 

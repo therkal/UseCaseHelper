@@ -6,13 +6,16 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using UseCaseHelper.BaseClasses;
+using UseCaseHelper.Interface;
 
 
 namespace UseCaseHelper.Model
 {
-    public class UseCase : ShapeObject
+    public class UseCase : ShapeObject , ISelectable
     {
         public const int Width = 160, Height = 80;              //Standard with & Height for the actor.
+
+        public bool IsSelected = false;
 
         //Form data.
         public string Naam { get; private set; }
@@ -60,6 +63,11 @@ namespace UseCaseHelper.Model
             Beschrijving = form.Beschrijving;
             Uitzonderingen = form.Uitzonderingen;
             Resultaat = form.Resultaat;
+        }
+
+        public void SetSelected(bool selected)
+        {
+            IsSelected = selected;
         }
     }
 }

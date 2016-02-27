@@ -55,6 +55,7 @@
       <DependentUpon>ActorCreater.cs</DependentUpon>
     </Compile>
     <Compile Include="BaseClasses\ShapeObject.cs" />
+    <Compile Include="Controls\GestureManager.cs" />
     <Compile Include="Form1.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -63,8 +64,10 @@
     </Compile>
     <Compile Include="BaseClasses\Shape.cs" />
     <Compile Include="Interface\ISelectable.cs" />
+    <Compile Include="Interface\IShape.cs" />
     <Compile Include="Model\Actor.cs" />
     <Compile Include="Model\Line.cs" />
+    <Compile Include="Model\ShapeGroup.cs" />
     <Compile Include="Model\UseCase.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

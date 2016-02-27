@@ -12,3 +12,4 @@ namespace UseCaseHelper.Interface
         void Draw(Graphics g, Color c);
     }
 }
+ 

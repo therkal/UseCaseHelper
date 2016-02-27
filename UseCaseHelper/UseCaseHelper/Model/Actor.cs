@@ -8,16 +8,19 @@ using System.Windows.Forms;
 using UseCaseHelper.Properties;
 using System.Windows.Media.Imaging;
 using UseCaseHelper.BaseClasses;
+using UseCaseHelper.Interface;
 
 namespace UseCaseHelper.Model
 {
-    public class Actor : ShapeObject
+    public class Actor : ShapeObject, ISelectable
     {
         public const int HeadSize = 30,
             Width = HeadSize,
             Height = HeadSize * 3;
 
         public string Name { get; private set; }
+
+        public bool IsSelected = false;
 
         /// <summary>
         /// Create
@@ -68,6 +71,11 @@ namespace UseCaseHelper.Model
         protected override Point CalculateClip()
         {
             return new Point(Start.X + HeadSize /2 , Start.Y + HeadSize /2 );
+        }
+
+        public void SetSelected(bool selected)
+        {
+            IsSelected = selected;
         }
     }
 }

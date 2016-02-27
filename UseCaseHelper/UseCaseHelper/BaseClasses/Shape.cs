@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using UseCaseHelper.Interface;
 
 namespace UseCaseHelper.BaseClasses
 {
@@ -29,6 +30,11 @@ namespace UseCaseHelper.BaseClasses
             Type = type;
             Start = start;
             End = end;
+        }
+
+        public Shape()
+        {
+
         }
 
         public abstract void Draw(Graphics g , Color c);

@@ -25,7 +25,7 @@ namespace UseCaseHelper.Model
             foreach (Shape s in myShapes )
             {
                 s.Draw(g, c);
-            }
+            } 
             
         }
 
