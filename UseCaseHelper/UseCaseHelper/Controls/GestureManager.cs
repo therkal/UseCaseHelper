@@ -44,11 +44,14 @@ namespace UseCaseHelper.Controls
                     return IsDrawingLine = true;
                 } else if (option == CheckBoxOptions.Move)
                 {
+                   
                     // We are moving!
                     targetInitX = firstTarget.Start.X;
                     targetInitY = firstTarget.Start.Y;
                     clickInitX = location.X;
                     clickInitY = location.Y;
+
+                    ShapeUniverse.Remove(firstTarget);
 
                     return IsMovingTarget = true;
                 }
@@ -58,9 +61,26 @@ namespace UseCaseHelper.Controls
 
         public void HandleMouseMove(Point location, Shape firstTaget, PictureBox passedCanvas)
         {
-            if(firstTaget != null)
+            if(FirstTarget != null)
             {
                 Target = true;
+
+                if (IsMovingTarget && FirstTarget.Type != DrawableType.Line)
+                {
+                    ShapeUniverse.Add(FirstTarget);
+                    // User is moving an object.
+                    ShapeObject so = FirstTarget as ShapeObject;
+
+                    so.SetStartLocation(new Point(
+                        targetInitX + (location.X - clickInitX),
+                        targetInitY + (location.Y - clickInitY)
+                        ));
+
+
+                    passedCanvas.Refresh();
+                    ShapeUniverse.Remove(FirstTarget);
+                }
+
             } else
             {
                 Target = false;
@@ -74,18 +94,7 @@ namespace UseCaseHelper.Controls
 
                 passedCanvas.Refresh();
             }
-            else if (IsMovingTarget && firstTaget.Type != DrawableType.Line)
-            {
-                // User is moving an object.
-                ShapeObject so = firstTaget as ShapeObject;
-
-                so.SetStartLocation(new Point(
-                    targetInitX + (location.X - clickInitX),
-                    targetInitY + (location.Y - clickInitY)
-                    ));
-
-                passedCanvas.Refresh();
-            }
+            
         }
 
         public void HandleMouseUp(CheckBoxOptions action, Point location ,PictureBox passedCanvas, Shape secondTarget = null)
@@ -144,7 +153,6 @@ namespace UseCaseHelper.Controls
                         }
                     }
 
-
                 }
                 else
                 {
@@ -178,8 +186,17 @@ namespace UseCaseHelper.Controls
                 lineDrawManager.LineStartX = lineDrawManager.LineStartY = lineDrawManager.LineDeltaX = lineDrawManager.LineDeltaY = 0;
                 FirstTarget = null;
 
-            } else if (action == CheckBoxOptions.Move)
+            } else if (action == CheckBoxOptions.Move && FirstTarget.Type != DrawableType.Line)
             {
+                IsMovingTarget = false;
+
+                ShapeUniverse.Add(FirstTarget);
+                ShapeUniverse.RecalculateLines((ShapeObject)FirstTarget, (ShapeObject)secondTarget, passedCanvas);
+
+                passedCanvas.Refresh();
+
+                targetInitX = targetInitY = clickInitX = clickInitY = 0;
+                FirstTarget = null;
 
             } else if (action == CheckBoxOptions.Delete)
             {

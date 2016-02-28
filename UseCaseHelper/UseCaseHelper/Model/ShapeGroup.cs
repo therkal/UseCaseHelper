@@ -4,6 +4,7 @@ using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 using UseCaseHelper.BaseClasses;
 using UseCaseHelper.Interface;
 
@@ -61,6 +62,40 @@ namespace UseCaseHelper.Model
             }
 
             return null;
+        }
+
+        public void RecalculateLines(ShapeObject firstTarget, ShapeObject secondTarget , PictureBox passedCanvas)
+        {
+            foreach (Line l in myShapes.Where(d => d.Type == DrawableType.Line))
+            {
+                ShapeObject od1 = null, od2 = null;
+                foreach (ShapeObject od in myShapes.Where(d => d.Type != DrawableType.Line))
+                {
+                    if (od == l.FirstTarget)
+                    {
+                        od1 = od;
+                    }
+                    else if (od == l.SecondTarget)
+                    {
+                        od2 = od;
+                    }
+                }
+
+                if (od1 == null && od2 != null)
+                {
+                    od1 = firstTarget;
+                }
+                else if (od1 != null && od2 == null)
+                {
+                    od2 = firstTarget;
+                }
+
+                if (od1 != null && od2 != null)
+                {
+                    l.SetStartAndEndLocation(od1.Clip, od2.Clip);
+                }
+            }
+            passedCanvas.Refresh();
         }
 
         public void ClearAll(Graphics g)

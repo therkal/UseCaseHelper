@@ -29,5 +29,11 @@ namespace UseCaseHelper.Model
         {
             IsSelected = selected;
         }
+
+        public void SetStartAndEndLocation(Point start, Point end)
+        {
+            Start = start;
+            End = end;
+        }
     }
 }
