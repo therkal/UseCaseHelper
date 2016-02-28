@@ -16,18 +16,10 @@ namespace UseCaseHelper
     public partial class Form1 : Form
     {
         #region Globals
-        private bool isDrawingLine = false;                             // Checks if we are drawing
-        private bool isMovingObject = false;                            // (Bool) Checks if we are moving.
-        private bool skipMouse = false;                                 // If we are deleting objects, skip mouse up.
-        private Shape firstTarget, secondTarget;                        //  Predefined class used for the boundaries 
-
         private ShapeGroup shapeUniverse = new ShapeGroup();            // Manages all shapes in the universe.
         private GestureManager gestureManager;
         private GestureManager.CheckBoxOptions action;
-
         #endregion Globals
-
-
 
         public Form1()
         {
