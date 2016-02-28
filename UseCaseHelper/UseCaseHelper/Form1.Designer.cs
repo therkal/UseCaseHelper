@@ -29,34 +29,46 @@
         private void InitializeComponent()
         {
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.rbDelete = new System.Windows.Forms.RadioButton();
             this.rbLine = new System.Windows.Forms.RadioButton();
+            this.rbMove = new System.Windows.Forms.RadioButton();
             this.rbUseCase = new System.Windows.Forms.RadioButton();
             this.rbActor = new System.Windows.Forms.RadioButton();
-            this.groupBox2 = new System.Windows.Forms.GroupBox();
-            this.rbDelete = new System.Windows.Forms.RadioButton();
-            this.rbMove = new System.Windows.Forms.RadioButton();
             this.btnClearAll = new System.Windows.Forms.Button();
             this.statusStrip1 = new System.Windows.Forms.StatusStrip();
             this.tsBottomBar = new System.Windows.Forms.ToolStripStatusLabel();
             this.drawCanvas = new System.Windows.Forms.PictureBox();
             this.btnScreenShot = new System.Windows.Forms.Button();
             this.groupBox1.SuspendLayout();
-            this.groupBox2.SuspendLayout();
             this.statusStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.drawCanvas)).BeginInit();
             this.SuspendLayout();
             // 
             // groupBox1
             // 
+            this.groupBox1.Controls.Add(this.rbDelete);
             this.groupBox1.Controls.Add(this.rbLine);
+            this.groupBox1.Controls.Add(this.rbMove);
             this.groupBox1.Controls.Add(this.rbUseCase);
             this.groupBox1.Controls.Add(this.rbActor);
             this.groupBox1.Location = new System.Drawing.Point(12, 12);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(137, 95);
+            this.groupBox1.Size = new System.Drawing.Size(155, 95);
             this.groupBox1.TabIndex = 0;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Elementen";
+            // 
+            // rbDelete
+            // 
+            this.rbDelete.AutoSize = true;
+            this.rbDelete.Location = new System.Drawing.Point(89, 42);
+            this.rbDelete.Name = "rbDelete";
+            this.rbDelete.Size = new System.Drawing.Size(56, 17);
+            this.rbDelete.TabIndex = 1;
+            this.rbDelete.TabStop = true;
+            this.rbDelete.Text = "Delete";
+            this.rbDelete.UseVisualStyleBackColor = true;
+            this.rbDelete.CheckedChanged += new System.EventHandler(this.rbCheckChanger);
             // 
             // rbLine
             // 
@@ -68,6 +80,19 @@
             this.rbLine.TabStop = true;
             this.rbLine.Text = "Line";
             this.rbLine.UseVisualStyleBackColor = true;
+            this.rbLine.CheckedChanged += new System.EventHandler(this.rbCheckChanger);
+            // 
+            // rbMove
+            // 
+            this.rbMove.AutoSize = true;
+            this.rbMove.Location = new System.Drawing.Point(89, 19);
+            this.rbMove.Name = "rbMove";
+            this.rbMove.Size = new System.Drawing.Size(52, 17);
+            this.rbMove.TabIndex = 0;
+            this.rbMove.TabStop = true;
+            this.rbMove.Text = "Move";
+            this.rbMove.UseVisualStyleBackColor = true;
+            this.rbMove.CheckedChanged += new System.EventHandler(this.rbCheckChanger);
             // 
             // rbUseCase
             // 
@@ -79,6 +104,7 @@
             this.rbUseCase.TabStop = true;
             this.rbUseCase.Text = "Use Case";
             this.rbUseCase.UseVisualStyleBackColor = true;
+            this.rbUseCase.CheckedChanged += new System.EventHandler(this.rbCheckChanger);
             // 
             // rbActor
             // 
@@ -90,39 +116,7 @@
             this.rbActor.TabStop = true;
             this.rbActor.Text = "Actor";
             this.rbActor.UseVisualStyleBackColor = true;
-            // 
-            // groupBox2
-            // 
-            this.groupBox2.Controls.Add(this.rbDelete);
-            this.groupBox2.Controls.Add(this.rbMove);
-            this.groupBox2.Location = new System.Drawing.Point(175, 12);
-            this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(137, 95);
-            this.groupBox2.TabIndex = 1;
-            this.groupBox2.TabStop = false;
-            this.groupBox2.Text = "Edit";
-            // 
-            // rbDelete
-            // 
-            this.rbDelete.AutoSize = true;
-            this.rbDelete.Location = new System.Drawing.Point(7, 43);
-            this.rbDelete.Name = "rbDelete";
-            this.rbDelete.Size = new System.Drawing.Size(56, 17);
-            this.rbDelete.TabIndex = 1;
-            this.rbDelete.TabStop = true;
-            this.rbDelete.Text = "Delete";
-            this.rbDelete.UseVisualStyleBackColor = true;
-            // 
-            // rbMove
-            // 
-            this.rbMove.AutoSize = true;
-            this.rbMove.Location = new System.Drawing.Point(7, 20);
-            this.rbMove.Name = "rbMove";
-            this.rbMove.Size = new System.Drawing.Size(52, 17);
-            this.rbMove.TabIndex = 0;
-            this.rbMove.TabStop = true;
-            this.rbMove.Text = "Move";
-            this.rbMove.UseVisualStyleBackColor = true;
+            this.rbActor.CheckedChanged += new System.EventHandler(this.rbCheckChanger);
             // 
             // btnClearAll
             // 
@@ -182,14 +176,11 @@
             this.Controls.Add(this.drawCanvas);
             this.Controls.Add(this.statusStrip1);
             this.Controls.Add(this.btnClearAll);
-            this.Controls.Add(this.groupBox2);
             this.Controls.Add(this.groupBox1);
             this.Name = "Form1";
             this.Text = "UseCaseHelper";
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
-            this.groupBox2.ResumeLayout(false);
-            this.groupBox2.PerformLayout();
             this.statusStrip1.ResumeLayout(false);
             this.statusStrip1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.drawCanvas)).EndInit();
@@ -206,7 +197,6 @@
         private System.Windows.Forms.RadioButton rbDelete;
         private System.Windows.Forms.RadioButton rbMove;
         private System.Windows.Forms.Button btnClearAll;
-        private System.Windows.Forms.GroupBox groupBox2;
         private System.Windows.Forms.GroupBox groupBox1;
         private System.Windows.Forms.StatusStrip statusStrip1;
         private System.Windows.Forms.ToolStripStatusLabel tsBottomBar;

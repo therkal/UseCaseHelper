@@ -66,6 +66,7 @@ namespace UseCaseHelper.Model
         public void ClearAll(Graphics g)
         {
             g.Clear(Color.White);
+            myShapes.Clear();
         }
 
     }

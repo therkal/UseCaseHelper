@@ -41,6 +41,11 @@ namespace UseCaseHelper.BaseClasses
 
         }
 
+        public void SetStartLocation(Point newLoc)
+        {
+            Clip = CalculateClip();
+            Start = newLoc;
+        }
         /// <summary>
         /// Calculates where to snap a line to an object.
         /// </summary>
