@@ -176,7 +176,7 @@ namespace UseCaseHelper.Controls
             } else if (action == CheckBoxOptions.Line) {
                 IsDrawingLine = false;
 
-                if (secondTarget != null && FirstTarget.Type != secondTarget.Type && FirstTarget.Type != DrawableType.Line && secondTarget.Type != DrawableType.Line)
+                if (secondTarget != null && FirstTarget.Type != secondTarget.Type )
                 {
                     //We have 2 points, and the first point is not the same as the second.
                     ShapeUniverse.Add(new Model.Line((ShapeObject)FirstTarget, (ShapeObject)secondTarget));

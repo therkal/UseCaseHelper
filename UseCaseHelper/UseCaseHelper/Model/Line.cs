@@ -10,7 +10,7 @@ using UseCaseHelper.Interface;
 
 namespace UseCaseHelper.Model
 {
-    public class Line : Shape, Interface.ISelectable
+    public class Line : ShapeObject, Interface.ISelectable
     {
         public ShapeObject FirstTarget, SecondTarget;
         public bool IsSelected = false;
@@ -34,6 +34,11 @@ namespace UseCaseHelper.Model
         {
             Start = start;
             End = end;
+        }
+
+        protected override Point CalculateClip()
+        {
+            return new Point(Start.X, Start.Y);
         }
     }
 }
