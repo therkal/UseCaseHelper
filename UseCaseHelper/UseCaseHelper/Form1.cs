@@ -13,7 +13,7 @@ using UseCaseHelper.Controls;
 
 namespace UseCaseHelper
 {
-    public partial class Form1 : Form
+    public partial class UseCaseHelper : Form
     {
         #region Globals
         private ShapeGroup shapeUniverse = new ShapeGroup();            // Manages all shapes in the universe.
@@ -21,7 +21,7 @@ namespace UseCaseHelper
         private GestureManager.CheckBoxOptions action;
         #endregion Globals
 
-        public Form1()
+        public UseCaseHelper()
         {
             InitializeComponent();
             gestureManager = new GestureManager(shapeUniverse);

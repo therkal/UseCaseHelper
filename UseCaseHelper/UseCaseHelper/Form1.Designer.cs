@@ -1,6 +1,6 @@
 ﻿namespace UseCaseHelper
 {
-    partial class Form1
+    partial class UseCaseHelper
     {
         /// <summary>
         /// Required designer variable.
@@ -167,7 +167,7 @@
             this.btnScreenShot.UseVisualStyleBackColor = true;
             this.btnScreenShot.Click += new System.EventHandler(this.btnScreenShot_Click);
             // 
-            // Form1
+            // UseCaseHelper
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
@@ -177,7 +177,7 @@
             this.Controls.Add(this.statusStrip1);
             this.Controls.Add(this.btnClearAll);
             this.Controls.Add(this.groupBox1);
-            this.Name = "Form1";
+            this.Name = "UseCaseHelper";
             this.Text = "UseCaseHelper";
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
